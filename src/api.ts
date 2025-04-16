@@ -23,6 +23,9 @@ api.interceptors.response.use(
     if (error.response?.status === 403) {
       toast.warning(error.response.data.message);
     }
+    if (error.response?.status === 500) {
+      toast.error("Something went wrong");
+    }
     return Promise.reject(error);
   }
 );

@@ -32,6 +32,17 @@ const router = createRouter({
             breadcrumbs: [{ name: "Companies", path: "/companies" }],
           },
         },
+        {
+          name: "CompaniesCreate",
+          path: "companies/create",
+          component: () => import("@/pages/companies/CompaniesCreate.vue"),
+          meta: {
+            breadcrumbs: [
+              { name: "Companies", path: "/companies" },
+              { name: "Create", path: "/companies/create" },
+            ],
+          },
+        },
       ],
     },
     {
