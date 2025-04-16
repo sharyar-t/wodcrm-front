@@ -13,22 +13,18 @@ const route = useRoute();
 
 const routeBreadcrumbs = computed(() => {
   if ("breadcrumbs" in route.meta && route.meta.breadcrumbs && route.meta.breadcrumbs.length > 0) {
-    if (typeof route.meta.breadcrumbs === "function") {
-      return route.meta.breadcrumbs(route);
-    }
     return route.meta.breadcrumbs;
-  } else {
-    return [];
   }
+  return [];
 });
 </script>
 
 <template>
   <Breadcrumb v-if="routeBreadcrumbs.length > 0">
     <BreadcrumbList>
-      <BreadcrumbItem v-for="item in routeBreadcrumbs" :key="item.label">
+      <BreadcrumbItem v-for="item in routeBreadcrumbs" :key="item.name">
         <BreadcrumbLink as-child>
-          <RouterLink :to="item.to">{{ item.label }}</RouterLink>
+          <RouterLink :to="item.path">{{ item.name }}</RouterLink>
         </BreadcrumbLink>
       </BreadcrumbItem>
     </BreadcrumbList>
