@@ -22,10 +22,28 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("userDetails");
   }
 
+  function initialize() {
+    const token = localStorage.getItem("accessToken");
+    const user = localStorage.getItem("userDetails");
+
+    if (token && user) {
+      try {
+        userDetails.value = JSON.parse(user);
+        isAuthenticated.value = true;
+      } catch (e) {
+        console.error("Ошибка при парсинге userDetails", e);
+        logout();
+      }
+    } else {
+      logout();
+    }
+  }
+
   return {
     userDetails,
     isAuthenticated,
     setUser,
     logout,
+    initialize,
   };
 });
