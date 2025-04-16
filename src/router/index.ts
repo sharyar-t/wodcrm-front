@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AppLayout from "@/layouts/AppLayout.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import { useAuthStore } from "@/stores/AuthStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,21 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const userStore = useAuthStore();
+  const token = localStorage.getItem("accessToken");
+
+  // Страницы, которые не требуют авторизации
+  const publicPages = ["/auth/sign-in"];
+  const authRequired = !publicPages.includes(to.path);
+
+  if (authRequired && (!token || !userStore.userDetails)) {
+    return next({ name: "SignIn" });
+  }
+
+  next();
 });
 
 export default router;

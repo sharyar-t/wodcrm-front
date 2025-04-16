@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
-
 import { Card, CardContent } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
@@ -10,15 +9,16 @@ import { Label } from "@/components/ui/label";
 
 import { useMutation } from "@tanstack/vue-query";
 import api from "@/api.ts";
+import { useAuthStore } from "@/stores/AuthStore";
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const { mutate } = useMutation({
   mutationFn: (values) => api.post("/auth/login", values),
   onSuccess: (response) => {
-    localStorage.setItem("token", response.data.accessToken);
-    localStorage.setItem("user", JSON.stringify(response.data.userResponse));
-    router.push({ name: "Companies" });
+    authStore.setUser(response.data.userResponse, response.data.accessToken);
+    router.push({ name: "Dashboard" });
   },
 });
 

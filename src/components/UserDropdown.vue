@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { computed } from "vue";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
+
+import { useAuthStore } from "@/stores/AuthStore";
+import { useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const logout = () => {
+  authStore.logout();
+  router.push({ name: "SignIn" });
+};
+
+const getUserInitials = computed(() => {
+  const userDetails = authStore.userDetails;
+  if (!userDetails) return "";
+  const firstName = userDetails.firstName || "";
+  const lastName = userDetails.lastName || "";
+  return `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
+});
 </script>
 
 <template>
@@ -19,16 +39,17 @@ import { Button } from "@/components/ui/button";
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative h-8 w-8 rounded-full">
         <Avatar class="h-8 w-8">
-          <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-          <AvatarFallback>SC</AvatarFallback>
+          <AvatarFallback>{{ getUserInitials }}</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56" align="end">
       <DropdownMenuLabel class="flex font-normal">
         <div class="flex flex-col space-y-1">
-          <p class="text-sm leading-none font-medium">shadcn</p>
-          <p class="text-muted-foreground text-xs leading-none">m@example.com</p>
+          <p class="text-sm leading-none font-medium">{{ authStore.userDetails?.username }}</p>
+          <p class="text-muted-foreground text-xs leading-none">
+            {{ authStore.userDetails?.phone }}
+          </p>
         </div>
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
@@ -48,7 +69,7 @@ import { Button } from "@/components/ui/button";
         <DropdownMenuItem>New Team</DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="logout">
         Log out
         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>
