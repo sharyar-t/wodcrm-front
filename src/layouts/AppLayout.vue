@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar.vue";
+import AppHeader from "@/components/AppHeader.vue";
 </script>
 
 <template>
-  <div class="bg-muted flex min-h-svh w-full flex-col">
-    <RouterLink to="/dashboard">Dashboard</RouterLink> |
-    <RouterLink to="/companies">Companies</RouterLink>
-    <RouterView />
-  </div>
+  <SidebarProvider>
+    <AppSidebar />
+    <SidebarInset class="p-4">
+      <AppHeader />
+      <div class="py-4">
+        <RouterView />
+      </div>
+    </SidebarInset>
+  </SidebarProvider>
 </template>
+
+<style scoped></style>
