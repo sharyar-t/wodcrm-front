@@ -14,4 +14,20 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      // Проксирование запросов на /auth/login
+      "/auth/login": {
+        target: "http://16.170.242.6:8080",
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/auth/, "/auth"), // можно опционально менять путь
+      },
+      // Проксирование всех запросов на /api/*
+      "/api": {
+        target: "http://16.170.242.6:8080",
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, "/api"), // можно опционально менять путь
+      },
+    },
+  },
 });
