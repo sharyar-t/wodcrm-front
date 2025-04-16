@@ -6,6 +6,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { RouterLink } from "vue-router";
 
@@ -22,11 +23,14 @@ const routeBreadcrumbs = computed(() => {
 <template>
   <Breadcrumb v-if="routeBreadcrumbs.length > 0">
     <BreadcrumbList>
-      <BreadcrumbItem v-for="item in routeBreadcrumbs" :key="item.name">
-        <BreadcrumbLink as-child>
-          <RouterLink :to="item.path">{{ item.name }}</RouterLink>
-        </BreadcrumbLink>
-      </BreadcrumbItem>
+      <template v-for="(item, index) in routeBreadcrumbs" :key="item.name">
+        <BreadcrumbItem>
+          <BreadcrumbLink as-child>
+            <RouterLink :to="item.path">{{ item.name }}</RouterLink>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator v-if="index !== routeBreadcrumbs.length - 1" />
+      </template>
     </BreadcrumbList>
   </Breadcrumb>
 </template>
