@@ -11,10 +11,24 @@ import AppHeader from "@/components/AppHeader.vue";
     <SidebarInset class="p-4">
       <AppHeader />
       <div class="py-4">
-        <RouterView />
+        <RouterView v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </RouterView>
       </div>
     </SidebarInset>
   </SidebarProvider>
 </template>
 
-<style scoped></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
