@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { ref, type Ref, h } from "vue";
 import api from "@/api";
 import Button from "@/components/ui/button/Button.vue";
 import { PhPlusCircle } from "@phosphor-icons/vue";
@@ -15,6 +15,7 @@ import {
   useVueTable,
 } from "@tanstack/vue-table";
 import type { Company, ListResponse } from "@/types.ts";
+import CompaniesActions from "@/components/companies/CompaniesActions.vue";
 
 const page = ref(0);
 
@@ -60,9 +61,7 @@ const columns = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
-      console.log("action", row);
-    },
+    cell: ({ row }) => h(CompaniesActions, { row }),
   },
 ];
 
