@@ -3,9 +3,9 @@ import AutoForm from "@/components/ui/auto-form/AutoForm.vue";
 import Button from "@/components/ui/button/Button.vue";
 import { z } from "zod";
 import { useMutation } from "@tanstack/vue-query";
-import api from "@/api";
 import { toast } from "vue-sonner";
 import { useRouter } from "vue-router";
+import { createCompany } from "@/services/CompaniesServices.ts";
 
 const router = useRouter();
 
@@ -19,10 +19,8 @@ const formSchema = z.object({
   active: z.boolean().default(true),
 });
 
-const { mutateAsync: createCompany } = useMutation({
-  mutationFn: (values: z.infer<typeof formSchema>) => {
-    return api.post("/api/companies", values);
-  },
+const { mutateAsync: create } = useMutation({
+  mutationFn: (values: z.infer<typeof formSchema>) => createCompany(values),
   onSuccess: () => {
     toast.success("Company created successfully");
     router.push("/companies");
@@ -30,7 +28,7 @@ const { mutateAsync: createCompany } = useMutation({
 });
 
 const handleSubmit = (values: z.infer<typeof formSchema>) => {
-  createCompany(values);
+  create(values);
 };
 </script>
 

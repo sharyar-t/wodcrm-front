@@ -5,6 +5,17 @@ export interface ListResponse<T> {
   totalPages: number;
 }
 
+export interface CompanyDTO {
+  id?: number;
+  name: string;
+  domain: string;
+  address: string;
+  phone: string;
+  subscriptionStartDate: Date;
+  subscriptionEndDate: Date;
+  active: boolean;
+}
+
 export interface Company {
   id: number;
   name: string;

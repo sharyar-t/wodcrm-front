@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, h } from "vue";
-import api from "@/api";
+import { ref, h } from "vue";
 import Button from "@/components/ui/button/Button.vue";
 import { PhPlusCircle } from "@phosphor-icons/vue";
 import { useQuery, keepPreviousData } from "@tanstack/vue-query";
@@ -14,17 +13,14 @@ import {
   getSortedRowModel,
   useVueTable,
 } from "@tanstack/vue-table";
-import type { Company, ListResponse } from "@/types.ts";
 import CompaniesActions from "@/components/companies/CompaniesActions.vue";
+import { getCompanies } from "@/services/CompaniesServices.ts";
 
 const page = ref(0);
 
-const fetcher = (page: Ref<number>) =>
-  api.get<ListResponse<Company>>("/api/companies", { params: { page: page.value } });
-
 const { data: companies } = useQuery({
   queryKey: ["companies", page],
-  queryFn: () => fetcher(page),
+  queryFn: () => getCompanies(page.value),
   select: (data) => data.data.content,
   placeholderData: keepPreviousData,
 });

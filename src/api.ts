@@ -23,6 +23,9 @@ api.interceptors.response.use(
       toast.error(error.response.data.message);
       router.push({ name: "SignIn" });
     }
+    if (error.response?.status === 400) {
+      toast.warning(error.response.data.message);
+    }
     if (error.response?.status === 403) {
       toast.warning(error.response.data.message);
     }

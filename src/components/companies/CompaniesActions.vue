@@ -21,8 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import api from "@/api.ts";
 import { useMutation } from "@tanstack/vue-query";
+import { deleteCompany } from "@/services/CompaniesServices.ts";
 
 interface DataTableRowActionsProps {
   row: Row<Company>;
@@ -30,10 +30,8 @@ interface DataTableRowActionsProps {
 
 const props = defineProps<DataTableRowActionsProps>();
 
-const deleteFetcher = async (id: number) => await api.delete(`/api/companies/${id}`);
-
 const { mutate } = useMutation({
-  mutationFn: (id: number) => deleteFetcher(id),
+  mutationFn: (id: number) => deleteCompany(id),
   onSuccess: () => {},
 });
 
