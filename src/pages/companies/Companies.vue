@@ -3,7 +3,7 @@ import { ref, type Ref } from "vue";
 import api from "@/api";
 import Button from "@/components/ui/button/Button.vue";
 import { PhPlusCircle } from "@phosphor-icons/vue";
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, keepPreviousData } from "@tanstack/vue-query";
 import { Table, TableHead, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import TableHeader from "@/components/ui/table/TableHeader.vue";
 import {
@@ -14,15 +14,18 @@ import {
   getSortedRowModel,
   useVueTable,
 } from "@tanstack/vue-table";
+import type { Company, ListResponse } from "@/types.ts";
 
 const page = ref(0);
 
-const fetcher = (page: Ref<number>) => api.get("/api/companies", { params: { page: page.value } });
+const fetcher = (page: Ref<number>) =>
+  api.get<ListResponse<Company>>("/api/companies", { params: { page: page.value } });
 
-const companiesQuery = useQuery({
+const { data: companies } = useQuery({
   queryKey: ["companies", page],
   queryFn: () => fetcher(page),
   select: (data) => data.data.content,
+  placeholderData: keepPreviousData,
 });
 
 const columns = [
@@ -54,13 +57,20 @@ const columns = [
     accessorKey: "active",
     header: "Active",
   },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      console.log("action", row);
+    },
+  },
 ];
 
 const search = ref("");
 
 const table = useVueTable({
   get data() {
-    return companiesQuery.data;
+    return companies;
   },
   columns,
   getCoreRowModel: getCoreRowModel(),

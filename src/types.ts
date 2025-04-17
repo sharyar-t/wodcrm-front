@@ -1,3 +1,10 @@
+export interface ListResponse<T> {
+  content: T;
+  currentPage: number;
+  totalItems: number;
+  totalPages: number;
+}
+
 export interface Company {
   id: number;
   name: string;
