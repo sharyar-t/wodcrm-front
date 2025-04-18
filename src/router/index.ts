@@ -43,6 +43,17 @@ const router = createRouter({
             ],
           },
         },
+        {
+          name: "CompaniesUpdate",
+          path: "companies/update/:id",
+          component: () => import("@/pages/companies/CompaniesUpdate.vue"),
+          meta: {
+            breadcrumbs: [
+              { name: "Companies", path: "/companies" },
+              { name: "Update", path: "/companies/update" },
+            ],
+          },
+        },
       ],
     },
     {

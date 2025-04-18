@@ -23,12 +23,15 @@ import {
 } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/vue-query";
 import { deleteCompany } from "@/services/CompaniesServices.ts";
+import { useRouter } from "vue-router";
 
 interface DataTableRowActionsProps {
   row: Row<Company>;
 }
 
 const props = defineProps<DataTableRowActionsProps>();
+
+const router = useRouter();
 
 const { mutate } = useMutation({
   mutationFn: (id: number) => deleteCompany(id),
@@ -37,6 +40,15 @@ const { mutate } = useMutation({
 
 function confirmDelete() {
   mutate(props.row.original.id);
+}
+
+function goToEdit() {
+  router.push({
+    name: "CompaniesUpdate",
+    params: {
+      id: props.row.original.id,
+    },
+  });
 }
 </script>
 
@@ -50,7 +62,7 @@ function confirmDelete() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" class="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem @click="goToEdit">Edit</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DialogTrigger as-child>
           <DropdownMenuItem>Delete</DropdownMenuItem>

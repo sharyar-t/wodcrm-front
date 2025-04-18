@@ -25,12 +25,12 @@ export interface Company {
   subscriptionStartDate: Date;
   subscriptionEndDate: Date;
   active: boolean;
-  createdBy: CreatedBy;
+  createdBy: User;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface CreatedBy {
+export interface User {
   id: number;
   username: string;
   password: string;
