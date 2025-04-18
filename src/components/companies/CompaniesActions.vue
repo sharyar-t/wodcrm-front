@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMutation } from "@tanstack/vue-query";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { deleteCompany } from "@/services/CompaniesServices.ts";
 import { useRouter } from "vue-router";
 
@@ -30,12 +30,14 @@ interface DataTableRowActionsProps {
 }
 
 const props = defineProps<DataTableRowActionsProps>();
-
+const queryClient = useQueryClient();
 const router = useRouter();
 
 const { mutate } = useMutation({
   mutationFn: (id: number) => deleteCompany(id),
-  onSuccess: () => {},
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["companies"] });
+  },
 });
 
 function confirmDelete() {
