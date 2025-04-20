@@ -3,7 +3,7 @@ import { toast } from "vue-sonner";
 import router from "./router";
 
 const api = axios.create({
-  baseURL: "/",
+  baseURL: `${import.meta.env.VITE_API_URL}`,
 });
 
 api.interceptors.request.use((config) => {
